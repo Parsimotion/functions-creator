@@ -22,7 +22,7 @@
     "lodash": "^4.17.4"
   },
   "devDependencies": {
-    "coffee-script": "1.12.4",
+    "coffee-script": "^1.12.4",
     "grunt": "1.0.1",
     "grunt-bump": "0.8.0",
     "grunt-contrib-clean": "1.0.0",
