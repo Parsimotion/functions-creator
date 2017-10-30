@@ -2,7 +2,9 @@
   "name": "functions-creator",
   "version": "0.0.0",
   "description": "functions-creator",
-  "main": "index.js",
+  "bin": {
+    "functions-creator": "./index.js"
+  },
   "scripts": {
     "test": "grunt test",
     "prepublish": "grunt build"
@@ -11,16 +13,21 @@
     "type": "git",
     "url": "git+https://github.com/Parsimotion/functions-creator.git"
   },
-  "dependencies": {},
+  "dependencies": {
+    "bluebird": "^3.5.1",
+    "handlebars": "^4.0.11",
+    "handlebars-helpers": "^0.9.8",
+    "handlebars-layouts": "^3.1.4",
+    "js-beautify": "^1.7.4",
+    "lodash": "^4.17.4"
+  },
   "devDependencies": {
-    "bluebird": "3.5.0",
     "coffee-script": "1.12.4",
     "grunt": "1.0.1",
     "grunt-bump": "0.8.0",
     "grunt-contrib-clean": "1.0.0",
     "grunt-contrib-coffee": "1.0.0",
     "grunt-mocha-test": "0.13.2",
-    "lodash": "4.17.4",
     "mocha": "3.2.0",
     "should": "11.2.1"
   },

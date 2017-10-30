@@ -26,8 +26,8 @@ module.exports = (grunt) ->
   grunt.initConfig
     #Clean build directory
     clean:
-      build: src: "lib"
-      specs: src: "lib/*.spec.js"
+      build: src: "bin"
+      specs: src: "bin/*.spec.js"
 
     #Compile coffee
     coffee:
@@ -35,7 +35,7 @@ module.exports = (grunt) ->
         expand: true
         cwd: "#{__dirname}/src"
         src: ["**/{,*/}*.coffee"]
-        dest: "lib/"
+        dest: "bin/"
         rename: (dest, src) ->
           dest + "/" + src.replace(/\.coffee$/, ".js")
 

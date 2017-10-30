@@ -1,1 +1,3 @@
-module.exports = require("./lib")
+#!/usr/bin/env node
+
+require("./bin")
