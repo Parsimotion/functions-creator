@@ -1,4 +1,4 @@
-process.title = "iwannabe"
+process.title = "functions-creator"
 
 _ = require "lodash"
 Promise = require "bluebird"
