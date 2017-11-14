@@ -8,6 +8,7 @@ layouts = require "handlebars-layouts"
 handlebarsHelpers = require "handlebars-helpers"
 
 fs = Promise.promisifyAll require "fs"
+option = require "option"
 beautify = require("js-beautify").js_beautify
 
 folders =
@@ -93,10 +94,11 @@ Promise.resolve()
     functionName = filePath.replace ".json", ""
 
     Promise.all [
-      _createFunction { functionName, processor, regular: true, config: _.merge({}, config, active: jobs?.regular or true) }
-      _createFunction { functionName, processor, regular: false, config: _.merge({}, config, active: jobs?.deadletter or true) }
-      _createHistoricalDeadletterProcessor { functionName, processor, config: _.merge({}, config,
-        active: jobs?.historicDeadletter or false,
-        schedule: jobs?.historicDeadletter?.schedule or "0 0 * */1 * *")
+      _createFunction { functionName, processor, regular: true, config: _.assign(active: option.fromNullable(jobs?.regular).valueOrElse(true), config) }
+      _createFunction { functionName, processor, regular: false, config: _.assign(active: option.fromNullable(jobs?.deadletter).valueOrElse(true), config) }
+      _createHistoricalDeadletterProcessor { functionName, processor, config: _.assign(
+        active: option.fromNullable(jobs?.historicDeadletter).valueOrElse(false),
+        schedule: option.fromNullable(jobs?.historicDeadletter?.schedule).valueOrElse "0 0 * */1 * *"
+      , config)
       }
     ]
