@@ -19,7 +19,8 @@
     "handlebars-helpers": "^0.9.8",
     "handlebars-layouts": "^3.1.4",
     "js-beautify": "^1.7.4",
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.4",
+    "option": "^0.2.4"
   },
   "devDependencies": {
     "coffee-script": "^1.12.4",
