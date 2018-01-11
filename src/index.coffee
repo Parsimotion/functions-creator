@@ -11,10 +11,19 @@ fs = Promise.promisifyAll require "fs"
 option = require "option"
 beautify = require("js-beautify").js_beautify
 
+args = require("args")
+
+args
+  .option("output", "Folder where the function will be generated", "./.build")
+  .option("templates", "Folder with templates to use", "./templates")
+  .option("functions", "Folder with metadata functions to create", "./functions")
+  .option("processors", "Folder with processors to use", "./processors")
+  .option("only-create-if-active", "It will only create the function if active", false);
+
+options = args.parse process.argv
+
 folders =
-  functions: "./functions"
-  build: "./.build"
-  templates: "./templates"
+  _.pick options, [ "functions", "output", "templates", "processors" ]
 
 APP_FUNCTIONS = process.env.APPS_FUNCTIONS or "mercadolibre-functions"
 
@@ -40,7 +49,9 @@ _generateTemplate = (handlebarsToUse, config) ->
   .then (content) -> fs.writeFileAsync "#{output}", beautify(content, indent_size: 2)
 
 _createFunction = ({ regular, functionName, processor, config }) ->
-  outputFolder = "#{folders.build}/#{functionName}"
+  return Promise.resolve() if not config.active and options["onlyCreateIfActive"]
+
+  outputFolder = "#{folders.output}/#{functionName}"
   outputFolder = "#{outputFolder}-deadletter" unless regular
   handlebarsToUse = newHandlebars()
 
@@ -61,7 +72,9 @@ _createFunction = ({ regular, functionName, processor, config }) ->
   .map (config) -> _generateTemplate handlebarsToUse, config
 
 _createHistoricalDeadletterProcessor = ({ functionName, processor, config }) ->
-  outputFolder = "#{folders.build}/#{functionName}-historic-deadletter"
+  return Promise.resolve() if not config.active and options["onlyCreateIfActive"]
+
+  outputFolder = "#{folders.output}/#{functionName}-historic-deadletter"
   handlebarsToUse = newHandlebars()
 
   _initFolder outputFolder
@@ -80,7 +93,7 @@ _createHistoricalDeadletterProcessor = ({ functionName, processor, config }) ->
 
 
 Promise.resolve()
-  .tap -> _initFolder folders.build
+  .tap -> _initFolder folders.output
   .then -> fs.readdirAsync folders.functions
   .map (filePath) ->
     Promise.props {
