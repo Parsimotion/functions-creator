@@ -106,7 +106,7 @@ Promise.resolve()
     processor = config.processor or "./processors/request.handlebars"
     functionName = filePath.replace ".json", ""
 
-    Promise.all [
+    $promises = Promise.all [
       _createFunction { functionName, processor, regular: true, config: _.assign(active: option.fromNullable(jobs?.regular).valueOrElse(true), config) }
       _createFunction { functionName, processor, regular: false, config: _.assign(active: option.fromNullable(jobs?.deadletter).valueOrElse(true), config) }
       _createHistoricalDeadletterProcessor { functionName, processor, config: _.assign(
@@ -115,3 +115,7 @@ Promise.resolve()
       , config)
       }
     ]
+
+    if ((config.replicas or 0) > 0)
+      _.times config.replicas, (n) ->
+        _createFunction { functionName: "#{functionName}-replica-#{n + 1}", processor, regular: true, config: _.assign(active: option.fromNullable(jobs?.regular).valueOrElse(true), config) }
