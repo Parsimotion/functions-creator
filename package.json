@@ -1,6 +1,6 @@
 {
   "name": "functions-creator",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "functions-creator",
   "bin": {
     "functions-creator": "./index.js"
