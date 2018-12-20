@@ -103,7 +103,7 @@ Promise.resolve()
   .each (opts) -> _.update opts, "config", JSON.parse
   .each ({ filePath, config }) ->
     { jobs } = config
-    processor = config.processor or "./processors/request.handlebars"
+    processor = [folders.processors, config.processor || "request.handlebars"].join("/");
     functionName = filePath.replace ".json", ""
 
     $promises = Promise.all [
