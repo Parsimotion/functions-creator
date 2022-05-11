@@ -111,7 +111,7 @@ Promise.resolve()
       _createFunction { functionName, processor, regular: false, config: _.assign(active: option.fromNullable(jobs?.deadletter).valueOrElse(true), config) }
       _createHistoricalDeadletterProcessor { functionName, processor, config: _.assign(
         active: option.fromNullable(jobs?.historicDeadletter).valueOrElse(false),
-        schedule: option.fromNullable(jobs?.historicDeadletter?.schedule).valueOrElse "0 0 * */1 * *"
+        schedule: option.fromNullable(jobs?.historicDeadletter?.schedule).valueOrElse "0 0 * * * *"
       , config)
       }
     ]
